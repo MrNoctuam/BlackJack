@@ -14,6 +14,7 @@ class Deck
 		bool Empty();
 		void SetNew();
 		Card getCard();
+
 	private:
 		const int StandartSize = 52;
 		int deckNumber;

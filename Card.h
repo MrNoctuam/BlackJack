@@ -14,11 +14,22 @@ class Card
 		int getScore();
 		int getID();
 		CardSuit getSuit();
+		void Print();
+		Card& operator= ( const Card& right )
+		{
+			if ( this == &right )
+				return *this;
+			id = right.id;
+			suit = right.suit;
+			score = right.score;
+		}
 	private:
 		// 2 - 2; 3 - 3; ... 11 - J; 12 - Q; 13 - K; 14 - A
 		int id;
 		CardSuit suit;
 		int score;
+		const int minID = 2;
+		const int maxID = 14;
 };
 
 

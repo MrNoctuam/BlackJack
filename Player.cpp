@@ -1,11 +1,23 @@
 #include "Player.h"
+#include <iostream>
 
 #define ACE 14
 #define ACE_MAX_SCORE 11
 #define ACE_MIN_SCORE 1
 
 
-Player::Player() : score( 0 ), active( true )
+Player::Player() : score( 0 ), status( Playing ), type( OrdinaryPlayer ), name( "Player" )
+{
+}
+
+
+Player::Player( Player::PlayerType newType ) : score( 0 ), status( Playing ), type( newType ), name( "Player" )
+{
+}
+
+
+Player::Player( Player::PlayerType newType, std::string newName ) : score( 0 ), status( Playing ), 
+																	type( newType ), name( newName )
 {
 }
 
@@ -20,7 +32,7 @@ void Player::ClearHand()
 	if ( !hand.empty() )
 		hand.clear();
 	score = 0;
-	active = true;
+	status = Playing;
 }
 
 
@@ -34,13 +46,36 @@ void Player::AddCard( Card newCard )
 {
 	hand.push_back( newCard );
 	refreshScore();
+	if ( score > BlackJack )
+	{
+		status = Lose;
+	}
 }
 
+
+Player::StatusType Player::getStatus()
+{
+	return status;
+}
+
+
+void Player::Print()
+{	
+	std::cout << "------------------------"
+		<< "Player: " << name << std::endl
+		<< "Score: " << score << std::endl
+		<< "Hand: ";
+	for ( size_t i = 0; i < hand.size(); i++ )
+	{
+		hand[i].Print();
+	}
+	std::cout << "\n------------------------\n";
+}
 
 void Player::refreshScore()
 {
 	score = 0;
-	for ( int i = 0; i < hand.size(); i++ )
+	for ( size_t i = 0; i < hand.size(); i++ )
 	{
 		if ( hand[i].getID() == ACE )
 		{

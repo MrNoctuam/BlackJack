@@ -2,7 +2,8 @@
 #include <cstdlib>
 #include <ctime>
 
-#define ID_NUMBER 13
+#define ID_NUMBER 14
+#define MAX_ID 14
 #define SUIT_NUMBER 4
 
 
@@ -54,11 +55,11 @@ Card Deck::getCard()
 
 void Deck::fillDeck()
 {
-	for ( int i = 0; i < StandartSize; i++ )
+	for ( int i = 2; i <= ID_NUMBER; i++ )
 	{
 		for ( int j = 0; j < SUIT_NUMBER; j++ )
 		{
-			Card card ( i % ID_NUMBER, static_cast<Card::CardSuit>( j ) );
+			Card card ( i % (ID_NUMBER+1), static_cast<Card::CardSuit>( j ) );
 			for ( int k = 0; k < deckNumber; k++ )
 			{
 				deck.push_back( card );
