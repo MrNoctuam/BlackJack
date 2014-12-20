@@ -12,9 +12,9 @@ class Exception
 		Exception( ExceptionCode excType );
 		Exception( ExceptionCode excType, std::string msg );
 		~Exception();
-		std::string GetMainMessage();
-		std::string GetAdditionalMessage();
-		int GetExceptionCode();
+		std::string GetMainMessage() const;
+		std::string GetAdditionalMessage() const;
+		int GetExceptionCode() const;
 	private:
 		ExceptionCode excCode;
 		std::string mainMsg, addMsg;

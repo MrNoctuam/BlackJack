@@ -24,19 +24,19 @@ Exception::~Exception()
 }
 
 
-std::string Exception::GetMainMessage()
+std::string Exception::GetMainMessage() const
 {
 	return mainMsg;
 }
 
 
-std::string Exception::GetAdditionalMessage()
+std::string Exception::GetAdditionalMessage() const
 {
 	return addMsg;
 }
 
 
-int Exception::GetExceptionCode()
+int Exception::GetExceptionCode() const
 {
 	return static_cast<int> ( excCode );
 }

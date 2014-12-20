@@ -32,25 +32,25 @@ void Card::setScore( int value )
 }
 
 
-int Card::getScore()
+int Card::getScore() const
 {
 	return score;
 }
 
 
-int Card::getID()
+int Card::getID() const
 {
 	return id;
 }
 
 
-Card::CardSuit Card::getSuit()
+Card::CardSuit Card::getSuit() const
 {
 	return suit;
 }
 
 
-void Card::Print()
+void Card::Print() const
 {
 	std::string strName, strSuit;
 	try

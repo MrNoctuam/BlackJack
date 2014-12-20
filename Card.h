@@ -11,10 +11,10 @@ class Card
 		Card( int newID, CardSuit newSuit, int newScore );
 		~Card();
 		void setScore( int value );
-		int getScore();
-		int getID();
-		CardSuit getSuit();
-		void Print();
+		int getScore() const;
+		int getID() const;
+		CardSuit getSuit() const;
+		void Print() const;
 		Card& operator= ( const Card& right )
 		{
 			if ( this == &right )
@@ -22,6 +22,7 @@ class Card
 			id = right.id;
 			suit = right.suit;
 			score = right.score;
+			return *this;
 		}
 	private:
 		// 2 - 2; 3 - 3; ... 11 - J; 12 - Q; 13 - K; 14 - A

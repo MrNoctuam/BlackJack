@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "CardVisualizerASCII.h"
 #include <iostream>
 
 #define ACE 14
@@ -11,20 +12,23 @@ Player::Player() : score( 0 ), status( Playing ), type( OrdinaryPlayer ), name( 
 }
 
 
+
 Player::Player( Player::PlayerType newType ) : score( 0 ), status( Playing ), type( newType ), name( "Player" )
 {
 }
 
 
-Player::Player( Player::PlayerType newType, std::string newName ) : score( 0 ), status( Playing ), 
-																	type( newType ), name( newName )
+
+Player::Player( Player::PlayerType newType, std::string newName ) : score( 0 ), status( Playing ), 																	type( newType ), name( newName )
 {
 }
+
 
 
 Player::~Player()
 {
 }
+
 
 
 void Player::ClearHand()
@@ -36,10 +40,12 @@ void Player::ClearHand()
 }
 
 
+
 int Player::getScore()
 {
 	return score;
 }
+
 
 
 void Player::AddCard( Card newCard )
@@ -53,6 +59,7 @@ void Player::AddCard( Card newCard )
 }
 
 
+
 Player::StatusType Player::getStatus()
 {
 	return status;
@@ -61,15 +68,27 @@ Player::StatusType Player::getStatus()
 
 void Player::Print()
 {	
-	std::cout << "------------------------"
-		<< "Player: " << name << std::endl
-		<< "Score: " << score << std::endl
-		<< "Hand: ";
+	std::cout << "============ Player: " << name << " ============" << std::endl;
+	CardVisualizerASCII visualizer( hand );
+	visualizer.Print();
+	std::cout << "id: ";
+	for ( size_t i = 0; i < hand.size(); i++ )
+	{
+		std::cout << hand[i].getID() << "; ";
+	}
+	std::cout << "\nSuit: ";
+	for ( size_t i = 0; i < hand.size(); i++ )
+	{
+		std::cout << hand[i].getSuit() << "; ";
+	}
+	std::cout << "\nScore: " << score << std::endl;
+	/*
 	for ( size_t i = 0; i < hand.size(); i++ )
 	{
 		hand[i].Print();
 	}
-	std::cout << "\n------------------------\n";
+	*/
+	std::cout << "\n========================\n";
 }
 
 void Player::refreshScore()
