@@ -3,6 +3,8 @@
 
 #include "Deck.h"
 #include "Player.h"
+#include "GameCoreExtras.h"
+
 
 
 class GameCore
@@ -11,15 +13,18 @@ class GameCore
 		GameCore();
 		~GameCore();
 		void StartNew();
-		void GiveCardToPlayer( Deck deck, Player playerName );
+		void Gameplay();
 
-
-		/*
+		
 	private:
+		bool isFinished;
 		Player player;
 		Player dealer;
-		Deck deck;*/
+		Deck deck;
+		void GameWithPlayer( Player& currentPlayer );
+		void RefreshGameStatus();
 };
+
 
 
 #endif

@@ -19,7 +19,7 @@ Player::Player( Player::PlayerType newType ) : score( 0 ), status( Playing ), ty
 
 
 
-Player::Player( Player::PlayerType newType, std::string newName ) : score( 0 ), status( Playing ), 																	type( newType ), name( newName )
+Player::Player( Player::PlayerType newType, std::string newName ) : score( 0 ), status( Playing ), type( newType ), name( newName )
 {
 }
 
@@ -41,7 +41,7 @@ void Player::ClearHand()
 
 
 
-int Player::getScore()
+int Player::Score() const
 {
 	return score;
 }
@@ -51,7 +51,7 @@ int Player::getScore()
 void Player::AddCard( Card newCard )
 {
 	hand.push_back( newCard );
-	refreshScore();
+	RefreshScore();
 	if ( score > BlackJack )
 	{
 		status = Lose;
@@ -60,13 +60,22 @@ void Player::AddCard( Card newCard )
 
 
 
-Player::StatusType Player::getStatus()
+Player::StatusType Player::Status() const
 {
 	return status;
 }
 
 
-void Player::Print()
+
+void Player::Status( const StatusType newStatus )
+{
+	status = newStatus;
+}
+
+
+
+
+void Player::Print() const
 {	
 	std::cout << "============ Player: " << name << " ============" << std::endl;
 	CardVisualizerASCII visualizer( hand );
@@ -74,12 +83,12 @@ void Player::Print()
 	std::cout << "id: ";
 	for ( size_t i = 0; i < hand.size(); i++ )
 	{
-		std::cout << hand[i].getID() << "; ";
+		std::cout << hand[i].ID() << "; ";
 	}
 	std::cout << "\nSuit: ";
 	for ( size_t i = 0; i < hand.size(); i++ )
 	{
-		std::cout << hand[i].getSuit() << "; ";
+		std::cout << hand[i].Suit() << "; ";
 	}
 	std::cout << "\nScore: " << score << std::endl;
 	/*
@@ -91,15 +100,33 @@ void Player::Print()
 	std::cout << "\n========================\n";
 }
 
-void Player::refreshScore()
+
+
+bool Player::IsDealer() const
+{
+	return type == Dealer;
+}
+
+
+
+void Player::RefreshScore()
 {
 	score = 0;
+	int countAce = 0;
 	for ( size_t i = 0; i < hand.size(); i++ )
 	{
-		if ( hand[i].getID() == ACE )
+		if ( hand[i].ID() == Card::idAce )
 		{
-			score += ( score > ( BlackJack - ACE_MAX_SCORE ) ) ? ACE_MAX_SCORE : ACE_MIN_SCORE;
+			countAce++;
 		}
-		score += hand[i].getScore();
+		score += hand[i].Score();
+	}
+	if ( score > BlackJack )
+	{
+		while ( ( score > BlackJack ) && ( countAce > 0 ) )
+		{
+			score += AceMinScore - AceMaxScore;
+			countAce--;
+		}
 	}
 }

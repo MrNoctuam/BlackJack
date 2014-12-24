@@ -6,31 +6,34 @@ class Card
 {
 	public:
 		Card();
-		enum CardSuit { Hearts, Diamonds, Clubs, Spades };
-		Card( int newID, CardSuit newSuit );
-		Card( int newID, CardSuit newSuit, int newScore );
+		Card( int newID, int newSuit );
+		Card( int newID, int newSuit, int newScore );
 		~Card();
-		void setScore( int value );
-		int getScore() const;
-		int getID() const;
-		CardSuit getSuit() const;
-		void Print() const;
-		Card& operator= ( const Card& right )
-		{
-			if ( this == &right )
-				return *this;
-			id = right.id;
-			suit = right.suit;
-			score = right.score;
-			return *this;
-		}
+		Card& operator= ( const Card& right );
+		void Score( int value );
+		int Score() const;
+		int ID() const;
+		int Suit() const;
+
+		static const int idAce = 14;
+		static const int minID = 2;   // '2'.
+		static const int maxID = 14;  // Ace.
+
+		static const int Hearts = 0;
+		static const int Diamonds = 1;
+		static const int Clubs = 2;
+		static const int Spades = 3;
+		static const int minSuit = Hearts;
+		static const int maxSuit = Spades;
 	private:
-		// 2 - 2; 3 - 3; ... 11 - J; 12 - Q; 13 - K; 14 - A
+		/* 
+			id list:
+			2 = '2'; 3 = '3'; 4 = '4'; 5 = '5'; 6 = '6'; 7 = '7'; 8 = '8'; 9 = '9'; 
+			10 = '10'; 11 = 'Jack'; 12 = 'Queen'; 13 = 'King'; 14 = 'Ace'; 
+		*/
 		int id;
-		CardSuit suit;
+		int suit;
 		int score;
-		const int minID = 2;
-		const int maxID = 14;
 };
 
 

@@ -19,10 +19,12 @@ class Player
 		~Player();
 
 		void ClearHand();
-		int getScore();
+		int Score() const;
 		void AddCard( const Card newCard );
-		StatusType getStatus();
-		void Print();
+		StatusType Status() const;
+		void Status( const StatusType newStatus );
+		void Print() const;
+		bool IsDealer() const;
 
 	private:
 		std::vector<Card> hand;
@@ -30,7 +32,10 @@ class Player
 		PlayerType type;
 		StatusType status;
 		std::string name;
-		void refreshScore();
+		static const int AceMinScore = 1;
+		static const int AceMaxScore = 11;
+
+		void RefreshScore();
 };
 
 

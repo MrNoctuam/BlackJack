@@ -67,7 +67,7 @@ void CardVisualize::SetNew( const Card& card )
 	{
 		AllocateNewBody();
 	}
-	switch ( card.getSuit() )
+	switch ( card.Suit() )
 	{
 		case Card::Spades :
 			CreateSpades();
@@ -90,7 +90,7 @@ void CardVisualize::SetNew( const Card& card )
 	}
 	std::cout << "body[" << CardIDPosY << "][" << CardIDPosX << "] = +" << body[CardIDPosY][CardIDPosX] << "+;\n";
 	*/
-	InsertID( card.getID() );
+	InsertID( card.ID() );
 }
 
 

@@ -2,26 +2,26 @@
 #include <cstdlib>
 #include <ctime>
 
-#define ID_NUMBER 14
-#define MAX_ID 14
-#define SUIT_NUMBER 4
 
 
 Deck::Deck() : deckNumber( 1 )
 {
-	fillDeck();
+	FillDeck();
 }
+
 
 
 Deck::Deck( int newDeckNumber ) : deckNumber( newDeckNumber )
 {
-	fillDeck();
+	FillDeck();
 }
+
 
 
 Deck::~Deck()
 {
 }
+
 
 
 void Deck::Clear()
@@ -31,35 +31,42 @@ void Deck::Clear()
 }
 
 
+
 bool Deck::Empty()
 {
 	return deck.empty();
 }
 
 
+
 void Deck::SetNew()
 {
 	Clear();
-	fillDeck();
+	FillDeck();
 }
 
 
-Card Deck::getCard()
+
+Card Deck::GetCard()
 {
-	int index = randomCard();
+	int index = RandomCard();
 	Card card = deck[index];
 	deck.erase( deck.begin() + index );
 	return card;
 }
 
 
-void Deck::fillDeck()
+
+void Deck::FillDeck()
 {
-	for ( int i = 2; i <= ID_NUMBER; i++ )
+	for ( int i = Card::minID; i <= Card::maxID; i++ )
 	{
-		for ( int j = 0; j < SUIT_NUMBER; j++ )
+		for ( int j = Card::minSuit; j < Card::maxSuit; j++ )
 		{
-			Card card ( i % (ID_NUMBER+1), static_cast<Card::CardSuit>( j ) );
+			//Card card( i % ( Card::maxID + 1 ), j );
+			int cardID = i % ( Card::maxID + 1 );
+			// fix this:
+			Card card( cardID, j, ( cardID < 10 ) ? cardID : ( ( cardID == Card::idAce ) ? 11 : 10 ) );
 			for ( int k = 0; k < deckNumber; k++ )
 			{
 				deck.push_back( card );
@@ -69,7 +76,8 @@ void Deck::fillDeck()
 }
 
 
-size_t Deck::randomCard()
+
+size_t Deck::RandomCard()
 {
 	srand( time( NULL ) );
 	return rand() % deck.size();

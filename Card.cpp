@@ -3,6 +3,7 @@
 #include <iostream>
 
 #define TEN 10
+#define ELEVEN 11
 
 
 Card::Card() : id( 2 ), suit( Hearts ), score( 0 )
@@ -10,14 +11,17 @@ Card::Card() : id( 2 ), suit( Hearts ), score( 0 )
 }
 
 
-Card::Card( int newID, CardSuit newSuit ) : id( newID ), suit( newSuit ), score( ( id < TEN ) ? id : TEN )
+
+Card::Card( int newID, int newSuit ) : id( newID ), suit( newSuit ), score( ( id < TEN ) ? id : ( ( id == idAce ) ? 11 : TEN ) )
 {
 }
 
 
-Card::Card( int newID, CardSuit newSuit, int newScore ) : id( newID ), suit( newSuit ), score( newScore )
+
+Card::Card( int newID, int newSuit, int newScore ) : id( newID ), suit( newSuit ), score( newScore )
 {
 }
+
 
 
 Card::~Card()
@@ -26,86 +30,42 @@ Card::~Card()
 }
 
 
-void Card::setScore( int value )
+
+Card& Card::operator= ( const Card& right )
+{
+	if ( this != &right )
+	{
+		id = right.id;
+		suit = right.suit;
+		score = right.score;
+	}
+	return *this;
+}
+
+
+
+void Card::Score( int value )
 {
 	score = value;
 }
 
 
-int Card::getScore() const
+
+int Card::Score() const
 {
 	return score;
 }
 
 
-int Card::getID() const
+
+int Card::ID() const
 {
 	return id;
 }
 
 
-Card::CardSuit Card::getSuit() const
+
+int Card::Suit() const
 {
 	return suit;
-}
-
-
-void Card::Print() const
-{
-	std::string strName, strSuit;
-	try
-	{
-		if ( ( id < minID ) || ( id > maxID ) )
-			throw Exception( Exception::WRONG_ID, "void Card::Print()" );
-	}
-	catch ( Exception exc )
-	{
-		std::cout << exc.GetMainMessage() << std::endl
-			<< exc.GetAdditionalMessage() << std::endl
-			<< "CardID = " << id << std::endl
-			<< "-------------------------" << std::endl << std::endl;
-		system( "pause" );
-		exit( exc.GetExceptionCode() );
-	}
-	switch ( suit )
-	{
-		case Hearts:
-			strSuit = "Hearts";
-			break;
-		case Diamonds:
-			strSuit = "Diamonds";
-			break;
-		case Clubs:
-			strSuit = "Clubs";
-			break;
-		case Spades:
-			strSuit = "Spades";
-			break;
-	}
-	switch ( id )
-	{
-		case 11:
-			strName = "Jack";
-			break;
-		case 12:
-			strName = "Queen";
-			break;
-		case 13:
-			strName = "King";
-			break;
-		case 14:
-			strName = "Ace";
-			break;
-		default:
-			strName.clear();
-	}
-	if ( strName.empty() )
-	{
-		std::cout << id;
-	}
-	else
-	{
-		std::cout << strName;
-	}
-	std::cout << "_of_" << strSuit << "; ";
 }

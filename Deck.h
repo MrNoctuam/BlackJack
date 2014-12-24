@@ -13,14 +13,14 @@ class Deck
 		void Clear();
 		bool Empty();
 		void SetNew();
-		Card getCard();
+		Card GetCard();
 
 	private:
-		const int StandartSize = 52;
+		static const int StandartSize = 52;
 		int deckNumber;
 		std::vector<Card> deck;
-		void fillDeck();
-		size_t randomCard();
+		void FillDeck();
+		size_t RandomCard();
 };
 
 
