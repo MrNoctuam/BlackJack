@@ -5,6 +5,7 @@
 class Card
 {
 	public:
+		enum FaceType { FaceUp, FaceDown };
 		Card();
 		Card( int newID, int newSuit );
 		Card( int newID, int newSuit, int newScore );
@@ -14,6 +15,8 @@ class Card
 		int Score() const;
 		int ID() const;
 		int Suit() const;
+		FaceType FaceStatus() const;
+		void FaceStatus( const FaceType value );
 
 		static const int idAce = 14;
 		static const int minID = 2;   // '2'.
@@ -34,6 +37,7 @@ class Card
 		int id;
 		int suit;
 		int score;
+		FaceType faceStatus;
 };
 
 

@@ -6,19 +6,20 @@
 #define ELEVEN 11
 
 
-Card::Card() : id( 2 ), suit( Hearts ), score( 0 )
+
+Card::Card() : id( 2 ), suit( Hearts ), score( 0 ), faceStatus( FaceUp )
 {
 }
 
 
 
-Card::Card( int newID, int newSuit ) : id( newID ), suit( newSuit ), score( ( id < TEN ) ? id : ( ( id == idAce ) ? 11 : TEN ) )
+Card::Card( int newID, int newSuit ) : id( newID ), suit( newSuit ), score( ( id < TEN ) ? id : ( ( id == idAce ) ? 11 : TEN ) ), faceStatus( FaceUp )
 {
 }
 
 
 
-Card::Card( int newID, int newSuit, int newScore ) : id( newID ), suit( newSuit ), score( newScore )
+Card::Card( int newID, int newSuit, int newScore ) : id( newID ), suit( newSuit ), score( newScore ), faceStatus( FaceUp )
 {
 }
 
@@ -68,4 +69,18 @@ int Card::ID() const
 int Card::Suit() const
 {
 	return suit;
+}
+
+
+
+Card::FaceType Card::FaceStatus() const
+{
+	return faceStatus;
+}
+
+
+
+void Card::FaceStatus( Card::FaceType value )
+{
+	faceStatus = value;
 }

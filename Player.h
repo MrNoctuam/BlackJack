@@ -6,6 +6,7 @@
 #include "Card.h"
 
 
+
 class Player
 {
 	public:
@@ -24,7 +25,9 @@ class Player
 		StatusType Status() const;
 		void Status( const StatusType newStatus );
 		void Print() const;
+		void TurnCardsFaceUp();
 		bool IsDealer() const;
+
 
 	private:
 		std::vector<Card> hand;
@@ -37,6 +40,7 @@ class Player
 
 		void RefreshScore();
 };
+
 
 
 #endif

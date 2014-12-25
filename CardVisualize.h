@@ -30,6 +30,7 @@ class CardVisualize {
 		void CreateDiamonds();
 		void CreateClubs();
 		void CreateSpades();
+		void CreateBack();
 		void AllocateNewBody();
 		void InsertID( int id );
 		static bool CopyMatrix( std::string* src, const size_t srcWidth, const size_t srcHeight,

@@ -67,30 +67,29 @@ void CardVisualize::SetNew( const Card& card )
 	{
 		AllocateNewBody();
 	}
-	switch ( card.Suit() )
+	if ( card.FaceStatus() == Card::FaceDown )
 	{
-		case Card::Spades :
-			CreateSpades();
-			break;
-		case Card::Clubs : 
-			CreateClubs();
-			break;
-		case Card::Diamonds :
-			CreateDiamonds();
-			break;
-		case Card::Hearts :
-			CreateHearts();
-			break;
+		CreateBack();
 	}
-	/*
-	//testPrint();
-	for ( size_t i = 0; i < height; i++ )
+	else
 	{
-		std::cout << testStr[i] << std::endl;
+		switch ( card.Suit() )
+		{
+			case Card::Spades:
+				CreateSpades();
+				break;
+			case Card::Clubs:
+				CreateClubs();
+				break;
+			case Card::Diamonds:
+				CreateDiamonds();
+				break;
+			case Card::Hearts:
+				CreateHearts();
+				break;
+		}
+		InsertID( card.ID() );
 	}
-	std::cout << "body[" << CardIDPosY << "][" << CardIDPosX << "] = +" << body[CardIDPosY][CardIDPosX] << "+;\n";
-	*/
-	InsertID( card.ID() );
 }
 
 
@@ -198,6 +197,28 @@ void CardVisualize::CreateSpades()
 	body[8] =  "|  ** * **  |";
 	body[9] =  "|    ***    |";
 	body[10] = "|   *****   |";
+	body[11] = " ----------- ";
+}
+
+
+
+void CardVisualize::CreateBack()
+{
+	if ( Empty() )
+	{
+		AllocateNewBody();
+	}
+	body[0] =  " ----------- ";
+	body[1] =  "|****   ****|";
+	body[2] =  "|*  *****  *|";
+	body[3] =  "|*  *****  *|";
+	body[4] =  "|*  *****  *|";
+	body[5] =  "| ********* |";
+	body[6] =  "| ********* |";
+	body[7] =  "|*  *****  *|";
+	body[8] =  "|*  *****  *|";
+	body[9] =  "|*  *****  *|";
+	body[10] = "|****   ****|";
 	body[11] = " ----------- ";
 }
 

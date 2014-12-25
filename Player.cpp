@@ -7,6 +7,7 @@
 #define ACE_MIN_SCORE 1
 
 
+
 Player::Player() : score( 0 ), status( Playing ), type( OrdinaryPlayer ), name( "Player" )
 {
 }
@@ -102,6 +103,19 @@ void Player::Print() const
 
 
 
+void Player::TurnCardsFaceUp()
+{
+	for ( size_t i = 0; i < hand.size(); i++ )
+	{
+		if ( hand[i].FaceStatus() == Card::FaceDown )
+		{
+			hand[i].FaceStatus( Card::FaceUp );
+		}
+	}
+}
+
+
+
 bool Player::IsDealer() const
 {
 	return type == Dealer;
@@ -115,11 +129,14 @@ void Player::RefreshScore()
 	int countAce = 0;
 	for ( size_t i = 0; i < hand.size(); i++ )
 	{
-		if ( hand[i].ID() == Card::idAce )
+		if ( hand[i].FaceStatus() == Card::FaceUp )
 		{
-			countAce++;
+			if ( hand[i].ID() == Card::idAce )
+			{
+				countAce++;
+			}
+			score += hand[i].Score();
 		}
-		score += hand[i].Score();
 	}
 	if ( score > BlackJack )
 	{

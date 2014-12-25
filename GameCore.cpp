@@ -21,6 +21,13 @@ void GameCore::StartNew()
 	player.ClearHand();
 	dealer.ClearHand();
 	deck.SetNew(); 
+
+	GameCoreExtras::GiveCardToPlayer( deck, player );
+	GameCoreExtras::GiveCardToPlayer( deck, player );
+	GameCoreExtras::GiveCardToPlayer( deck, dealer );
+	Card card( deck.GetCard() );
+	card.FaceStatus( Card::FaceDown );
+	dealer.AddCard( card );
 }
 
 
@@ -31,6 +38,7 @@ void GameCore::Gameplay()
 	
 	if ( !isFinished )
 	{
+		dealer.TurnCardsFaceUp();
 		GameWithPlayer( dealer );
 	}
 
