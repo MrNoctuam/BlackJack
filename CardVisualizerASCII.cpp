@@ -3,16 +3,19 @@
 
 
 
-CardVisualizerASCII::CardVisualizerASCII() : body( 0 ), heigth( 0 ), width( 0 )
+CardVisualizerASCII::CardVisualizerASCII() : body( 0 )
 {
 }
 
 
 
-CardVisualizerASCII::CardVisualizerASCII( const std::vector<Card>& cards )
+CardVisualizerASCII::CardVisualizerASCII( CardVisualizerASCII& src )
 {
-	CreateNew( cards );
+	AllocateNewBody();
+	// REFACTORING
+	CopyMatrix( src.body, src.width, src.height, body, width, height );
 }
+
 
 
 CardVisualizerASCII::~CardVisualizerASCII()
@@ -22,11 +25,29 @@ CardVisualizerASCII::~CardVisualizerASCII()
 
 
 
-bool CardVisualizerASCII::Empty() const
+CardVisualizerASCII& CardVisualizerASCII::operator= ( const CardVisualizerASCII& src )
 {
-	return ( ( width == 0 ) && ( heigth == 0 ) && ( body == 0 ) );
+	if ( this != &src )
+	{
+		Clear();
+		CopyMatrix( src.body, src.width, src.height, body, width, height );
+	}
+	return *this;
 }
 
+
+
+std::string CardVisualizerASCII::operator[] ( unsigned int index ) const
+{
+	return body[index];
+}
+
+
+
+bool CardVisualizerASCII::Empty() const
+{
+	return body == 0;
+}
 
 
 
@@ -36,73 +57,235 @@ void CardVisualizerASCII::Clear()
 	{
 		delete[] body;
 	}
-	width = 0;
-	heigth = 0;
 }
 
 
 
-void CardVisualizerASCII::CreateNew( const std::vector<Card>& cards )
+void CardVisualizerASCII::SetNew( const Card& card )
 {
-	MakeVisualization( cards );
-}
-
-
-
-void CardVisualizerASCII::Print() const
-{
-	if ( !Empty() )
+	if ( Empty() )
 	{
-		for ( size_t i = 0; i < heigth; i++ )
+		AllocateNewBody();
+	}
+	if ( card.FaceStatus() == Card::FaceDown )
+	{
+		CreateBack();
+	}
+	else
+	{
+		switch ( card.Suit() )
 		{
-			std::cout << body[i] << std::endl;
+			case Card::Spades:
+				CreateSpades();
+				break;
+			case Card::Clubs:
+				CreateClubs();
+				break;
+			case Card::Diamonds:
+				CreateDiamonds();
+				break;
+			case Card::Hearts:
+				CreateHearts();
+				break;
 		}
+		InsertID( card.ID() );
 	}
 }
 
 
 
-void CardVisualizerASCII::AllocateNewBody( const size_t cardsNumber )
+char CardVisualizerASCII::GetElement( const unsigned int x, const unsigned int y ) const
 {
-	if ( !Empty() )
-	{
-		Clear();
-	}
-	heigth = CardHeight;
-	width = CardWidth * ( cardsNumber ) + 1;
-	body = new std::string[heigth];
+	return ( ( x < width ) && ( y < height ) ) ? body[x][y] : 0;
+}
+
+
+unsigned int CardVisualizerASCII::GetWidth()
+{
+	return width;
 }
 
 
 
-void CardVisualizerASCII::AddCardToVisualization( const CardVisualize& cardVis, size_t cardIndex )
+unsigned int CardVisualizerASCII::GetHeight()
 {
-	for ( size_t i = 0; i < CardHeight; i++ )
-	{
-		if ( !body[i].empty() )
-		{
-			body[i].pop_back();
-		}
-		body[i] += cardVis[i];
-		/*
-		for ( size_t j = 0; j < CardWidth; j++ )
-		{
-			body[i][cardIndex * CardWidth + j] = cardVis.GetElement( i, j );
-		}
-		body[i][(cardIndex + 1)  *  CardWidth] = '\n';
-		*/
-	}
+	return height;
 }
 
 
 
-void CardVisualizerASCII::MakeVisualization( const std::vector<Card>& cards )
+void CardVisualizerASCII::CreateHearts()
 {
-	AllocateNewBody( cards.size() );
-	CardVisualize cardVis;
-	for ( size_t i = 0; i < cards.size(); i++ )
+	if ( Empty() )
 	{
-		cardVis.SetNew( cards[i] );
-		AddCardToVisualization( cardVis, i );
+		AllocateNewBody();
+	}
+	body[0] =  " ----------- ";
+	body[1] =  "|           |";
+	body[2] =  "|           |";
+	body[3] =  "|  **   **  |";
+	body[4] =  "| ********* |";
+	body[5] =  "| ********* |";
+	body[6] =  "| ********* |";
+	body[7] =  "|  *******  |";
+	body[8] =  "|   *****   |";
+	body[9] =  "|    ***    |";
+	body[10] = "|     *     |";
+	body[11] = " ----------- ";
+}
+
+
+
+void CardVisualizerASCII::CreateDiamonds()
+{
+	if ( Empty() )
+	{
+		AllocateNewBody();
+	}
+	body[0] =  " ----------- ";
+	body[1] =  "|           |";
+	body[2] =  "|     *     |";
+	body[3] =  "|    ***    |";
+	body[4] =  "|   *****   |";
+	body[5] =  "|  *******  |";
+	body[6] =  "| ********* |";
+	body[7] =  "|  *******  |";
+	body[8] =  "|   *****   |";
+	body[9] =  "|    ***    |";
+	body[10] = "|     *     |";
+	body[11] = " ----------- ";
+}
+
+
+
+void CardVisualizerASCII::CreateClubs()
+{
+	if ( Empty() )
+	{
+		AllocateNewBody();
+	}
+	body[0] =  " ----------- ";
+	body[1] =  "|    ***    |";
+	body[2] =  "|    ***    |";
+	body[3] =  "|    ***    |";
+	body[4] =  "|     *     |";
+	body[5] =  "|***  *  ***|";
+	body[6] =  "|***********|";
+	body[7] =  "|***  *  ***|";
+	body[8] =  "|     *     |";
+	body[9] =  "|     *     |";
+	body[10] = "|    ***    |";
+	body[11] = " ----------- ";
+}
+
+
+
+void CardVisualizerASCII::CreateSpades()
+{
+	if ( Empty() )
+	{
+		AllocateNewBody();
+	}
+	body[0] =  " ----------- ";
+	body[1] =  "|     *     |";
+	body[2] =  "|    ***    |";
+	body[3] =  "|   *****   |";
+	body[4] =  "|  *******  |";
+	body[5] =  "| ********* |";
+	body[6] =  "| ********* |";
+	body[7] =  "| ********* |";
+	body[8] =  "|  ** * **  |";
+	body[9] =  "|    ***    |";
+	body[10] = "|   *****   |";
+	body[11] = " ----------- ";
+}
+
+
+
+void CardVisualizerASCII::CreateBack()
+{
+	if ( Empty() )
+	{
+		AllocateNewBody();
+	}
+	body[0] =  " ----------- ";
+	body[1] =  "|****   ****|";
+	body[2] =  "|*  *****  *|";
+	body[3] =  "|*  *****  *|";
+	body[4] =  "|*  *****  *|";
+	body[5] =  "| ********* |";
+	body[6] =  "| ********* |";
+	body[7] =  "|*  *****  *|";
+	body[8] =  "|*  *****  *|";
+	body[9] =  "|*  *****  *|";
+	body[10] = "|****   ****|";
+	body[11] = " ----------- ";
+}
+
+
+
+void CardVisualizerASCII::AllocateNewBody()
+{
+	body = new std::string[height];
+}
+
+
+
+void CardVisualizerASCII::InsertID( int id )
+{
+	switch ( id )
+	{
+		case 10:
+			body[CardIDPosY][CardIDPosX] = '1';
+			body[CardIDPosY][CardIDPosX + 1] = '0';
+			break;
+		case 11:
+			body[CardIDPosY][CardIDPosX] = 'J';
+			break;
+		case 12:
+			body[CardIDPosY][CardIDPosX] = 'Q';
+			break;
+		case 13:
+			body[CardIDPosY][CardIDPosX] = 'K';
+			break;
+		case 14:
+			body[CardIDPosY][CardIDPosX] = 'A';
+			break;
+		default:
+			body[CardIDPosY][CardIDPosX] = '0' + static_cast<char> ( id );
+	}
+}
+
+
+bool CardVisualizerASCII::CopyMatrix( std::string* src, const unsigned int srcWidth, const unsigned int srcHeight,
+								std::string* dst, const unsigned int dstWidth, const unsigned int dstHeight )
+{
+	// FIX with memcpy()!
+	bool resFlag = ( ( srcWidth == dstWidth ) && ( srcHeight == dstHeight ) );
+	if ( resFlag )
+	{
+		for ( unsigned int i = 0; i < srcHeight; i++ )
+		{
+			dst[i].resize( dstWidth );
+			for ( unsigned int j = 0; j < srcWidth; j++ )
+			{
+				dst[i][j] = src[i][j];
+			}
+		}
+	}
+	return resFlag;
+}
+
+
+
+void CardVisualizerASCII::testPrint()
+{
+	for ( unsigned int i = 0; i < height; i++ )
+	{
+		for ( unsigned int j = 0; j < width; j++ )
+		{
+			std::cout << body[i][j];
+		}
+		std::cout << std::endl;
 	}
 }

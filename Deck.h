@@ -4,14 +4,17 @@
 #include <vector>
 #include "Card.h"
 
+
+
 class Deck
 {
 	public:
 		Deck();
 		Deck( int newDeckNumber );
 		~Deck();
+
 		void Clear();
-		bool Empty();
+		bool Empty() const;
 		void SetNew();
 		Card GetCard();
 
@@ -20,8 +23,9 @@ class Deck
 		int deckNumber;
 		std::vector<Card> deck;
 		void FillDeck();
-		size_t RandomCard();
+		unsigned int RandomCard();
 };
+
 
 
 #endif

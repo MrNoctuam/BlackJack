@@ -1,26 +1,22 @@
 #include "Player.h"
-#include "CardVisualizerASCII.h"
+#include "CardVisualizerArrayASCII.h"
 #include <iostream>
 
-#define ACE 14
-#define ACE_MAX_SCORE 11
-#define ACE_MIN_SCORE 1
 
 
-
-Player::Player() : score( 0 ), status( Playing ), type( OrdinaryPlayer ), name( "Player" )
+Player::Player() : PlayerBase("Player"), money( 0 )
 {
 }
 
 
 
-Player::Player( Player::PlayerType newType ) : score( 0 ), status( Playing ), type( newType ), name( "Player" )
+Player::Player( std::string newName ) : PlayerBase( newName ), money( 0 )
 {
 }
 
 
 
-Player::Player( Player::PlayerType newType, std::string newName ) : score( 0 ), status( Playing ), type( newType ), name( newName )
+Player::Player( std::string newName, int newMoney ) : PlayerBase( newName ), money( newMoney )
 {
 }
 
@@ -32,118 +28,65 @@ Player::~Player()
 
 
 
-void Player::ClearHand()
-{
-	if ( !hand.empty() )
-		hand.clear();
-	score = 0;
-	status = Playing;
-}
-
-
-
-int Player::Score() const
-{
-	return score;
-}
-
-
-
-void Player::AddCard( Card newCard )
-{
-	hand.push_back( newCard );
-	RefreshScore();
-	if ( score > BlackJack )
-	{
-		status = Lose;
-	}
-}
-
-
-
-Player::StatusType Player::Status() const
-{
-	return status;
-}
-
-
-
-void Player::Status( const StatusType newStatus )
-{
-	status = newStatus;
-}
-
-
-
-
 void Player::Print() const
-{	
-	std::cout << "============ Player: " << name << " ============" << std::endl;
-	CardVisualizerASCII visualizer( hand );
+{
+	std::cout << "______________________________________________________________________________________" << std::endl << std::endl;
+	std::cout << name << std::endl << std::endl;
+	CardVisualizerArrayASCII visualizer( hand );
 	visualizer.Print();
+	/*
 	std::cout << "id: ";
-	for ( size_t i = 0; i < hand.size(); i++ )
+	for ( unsigned int i = 0; i < hand.size(); i++ )
 	{
 		std::cout << hand[i].ID() << "; ";
 	}
 	std::cout << "\nSuit: ";
-	for ( size_t i = 0; i < hand.size(); i++ )
+	for ( unsigned int i = 0; i < hand.size(); i++ )
 	{
 		std::cout << hand[i].Suit() << "; ";
 	}
-	std::cout << "\nScore: " << score << std::endl;
-	/*
-	for ( size_t i = 0; i < hand.size(); i++ )
-	{
-		hand[i].Print();
-	}
 	*/
-	std::cout << "\n========================\n";
+	std::cout << "\nScore: " << score << std::endl;
+	std::cout << "Money: $" << money << std::endl;
+	std::cout << "______________________________________________________________________________________\n";
 }
 
 
 
-void Player::TurnCardsFaceUp()
+bool Player::AddCardDecision() const
 {
-	for ( size_t i = 0; i < hand.size(); i++ )
-	{
-		if ( hand[i].FaceStatus() == Card::FaceDown )
-		{
-			hand[i].FaceStatus( Card::FaceUp );
-		}
-	}
+	bool flagAddCard = false;
+	char answer;
+	std::cout << "\n\nAdd new card ? ( y / n )" << std::endl;
+	std::cin >> answer;
+	flagAddCard = ( ( answer == 'y' ) || ( answer == 'Y' ) );
+	return flagAddCard;
 }
 
 
 
-bool Player::IsDealer() const
+int Player::Money() const
 {
-	return type == Dealer;
+	return money;
 }
 
 
 
-void Player::RefreshScore()
+void Player::Money( int value )
 {
-	score = 0;
-	int countAce = 0;
-	for ( size_t i = 0; i < hand.size(); i++ )
-	{
-		if ( hand[i].FaceStatus() == Card::FaceUp )
-		{
-			if ( hand[i].ID() == Card::idAce )
-			{
-				countAce++;
-			}
-			score += hand[i].Score();
-		}
-	}
-	if ( score > BlackJack )
-	{
-		while ( ( score > BlackJack ) && ( countAce > 0 ) )
-		{
-			score += AceMinScore - AceMaxScore;
-			countAce--;
-		}
-	}
+	money = value;
+}
+
+
+
+void Player::AddMoney( int value )
+{
+	money += value;
+}
+
+
+
+void Player::SubMoney( int value )
+{
+	money -= value;
 }

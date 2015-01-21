@@ -2,9 +2,6 @@
 #include "Exception.h"
 #include <iostream>
 
-#define TEN 10
-#define ELEVEN 11
-
 
 
 Card::Card() : id( 2 ), suit( Hearts ), score( 0 ), faceStatus( FaceUp )
@@ -13,15 +10,16 @@ Card::Card() : id( 2 ), suit( Hearts ), score( 0 ), faceStatus( FaceUp )
 
 
 
-Card::Card( int newID, int newSuit ) : id( newID ), suit( newSuit ), score( ( id < TEN ) ? id : ( ( id == idAce ) ? 11 : TEN ) ), faceStatus( FaceUp )
-{
-}
-
-
-
 Card::Card( int newID, int newSuit, int newScore ) : id( newID ), suit( newSuit ), score( newScore ), faceStatus( FaceUp )
 {
 }
+
+
+
+Card::Card( const Card& src ) : id( src.id ), suit( src.suit ), score( src.score ), faceStatus( src.faceStatus )
+{
+}
+
 
 
 

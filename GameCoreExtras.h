@@ -2,7 +2,7 @@
 #define GAMECOREEXTRAS_H
 
 #include "Deck.h"
-#include "Player.h"
+#include "PlayerBase.h"
 
 
 
@@ -10,9 +10,8 @@ class GameCoreExtras {
 	public:
 		GameCoreExtras();
 		~GameCoreExtras();
-		static void GiveCardToPlayer( Deck& deck, Player& player );
-		static void PrintGameStatus( const Player& dealer, const Player& player );
-		static bool AddCardDecision( const Player& player );
+		static void GiveCardToPlayer( Deck& deck, PlayerBase& player );
+		static void PrintGameStatus( const PlayerBase& dealer, const PlayerBase& player );
 };
 
 

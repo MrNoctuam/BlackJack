@@ -2,14 +2,17 @@
 #define CARD_H 
 
 
+
 class Card
 {
 	public:
 		enum FaceType { FaceUp, FaceDown };
+
 		Card();
-		Card( int newID, int newSuit );
 		Card( int newID, int newSuit, int newScore );
+		Card( const Card& src );
 		~Card();
+
 		Card& operator= ( const Card& right );
 		void Score( int value );
 		int Score() const;
@@ -28,6 +31,7 @@ class Card
 		static const int Spades = 3;
 		static const int minSuit = Hearts;
 		static const int maxSuit = Spades;
+
 	private:
 		/* 
 			id list:
@@ -39,6 +43,7 @@ class Card
 		int score;
 		FaceType faceStatus;
 };
+
 
 
 #endif

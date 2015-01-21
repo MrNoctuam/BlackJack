@@ -32,7 +32,7 @@ void Deck::Clear()
 
 
 
-bool Deck::Empty()
+bool Deck::Empty() const
 {
 	return deck.empty();
 }
@@ -63,10 +63,13 @@ void Deck::FillDeck()
 	{
 		for ( int j = Card::minSuit; j < Card::maxSuit; j++ )
 		{
-			//Card card( i % ( Card::maxID + 1 ), j );
 			int cardID = i % ( Card::maxID + 1 );
-			// fix this:
-			Card card( cardID, j, ( cardID < 10 ) ? cardID : ( ( cardID == Card::idAce ) ? 11 : 10 ) );
+			int cardScore = ( ( cardID < 10 ) ? cardID : 10 );
+			if ( cardID == Card::idAce )
+			{
+				cardScore = 11;
+			}
+			Card card( cardID, j, cardScore );
 			for ( int k = 0; k < deckNumber; k++ )
 			{
 				deck.push_back( card );
@@ -77,7 +80,7 @@ void Deck::FillDeck()
 
 
 
-size_t Deck::RandomCard()
+unsigned int Deck::RandomCard()
 {
 	srand( time( NULL ) );
 	return rand() % deck.size();

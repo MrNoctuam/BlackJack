@@ -1,44 +1,26 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <vector>
-#include <string>
-#include "Card.h"
+#include "PlayerBase.h"
 
 
 
-class Player
+class Player : public PlayerBase 
 {
 	public:
-		static const int BlackJack = 21;
-		enum StatusType { Playing, Waiting, Win, Lose };
-		enum PlayerType { OrdinaryPlayer, Dealer };
-
 		Player();
-		Player( PlayerType newType );
-		Player( PlayerType newType, std::string newName );
-		~Player();
-
-		void ClearHand();
-		int Score() const;
-		void AddCard( const Card newCard );
-		StatusType Status() const;
-		void Status( const StatusType newStatus );
+		Player( std::string newName );
+		Player( std::string newName, int newMoney );
+		virtual ~Player();
 		void Print() const;
-		void TurnCardsFaceUp();
-		bool IsDealer() const;
-
+		bool AddCardDecision() const;
+		int Money() const;
+		void Money( int value );
+		void AddMoney( int value );
+		void SubMoney( int value );
 
 	private:
-		std::vector<Card> hand;
-		int score;
-		PlayerType type;
-		StatusType status;
-		std::string name;
-		static const int AceMinScore = 1;
-		static const int AceMaxScore = 11;
-
-		void RefreshScore();
+		int money;
 };
 
 
